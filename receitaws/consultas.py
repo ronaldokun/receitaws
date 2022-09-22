@@ -106,10 +106,12 @@ def salvar_requisicao(results: Iterable, # Lista com o retorno das requisições
 )->None:
     """Salva a lista de requisições `results` no arquivo `saida`"""
     df = pd.DataFrame(results)
+    if saida is None:
+        saida = Path.cwd() / 'resultados.csv'
     try:
         saida = Path(saida)
-    except TypeError:
-        saida = Path.cwd() / 'resultados.csv'
+    except TypeError as e:
+        raise TypeError("Verifique o caminho do arquivo de saída digitado!") from e
 
     match suffix := saida.suffix:
         case '.csv' | '.txt':

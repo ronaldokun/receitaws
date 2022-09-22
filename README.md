@@ -458,7 +458,9 @@ Infoconv da receita federal 😎
 
 ### Script em linha de comando
 
-A API principal `requisitar_em _lote` pode ser executada
+A API principal `requisitar_em _lote` mostrada acima pode ser executada
 programaticamente em linha de comando:
+
+    python -m receitaws [OPTIONS] FILENAME CPF_USUARIO
 
 <img src="cli.png" alt="Requisição em Lote na Linha de Comando" />
