@@ -199,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#cpf" id="toc-cpf" class="nav-link" data-scroll-target="#cpf">CPF</a></li>
   <li><a href="#cnpj" id="toc-cnpj" class="nav-link" data-scroll-target="#cnpj">CNPJ</a></li>
   <li><a href="#api-para-consulta-em-lote" id="toc-api-para-consulta-em-lote" class="nav-link" data-scroll-target="#api-para-consulta-em-lote">API para consulta em lote</a></li>
-  <li><a href="#consultar_do_arquivo" id="toc-consultar_do_arquivo" class="nav-link" data-scroll-target="#consultar_do_arquivo">consultar_do_arquivo</a></li>
+  <li><a href="#requisitar_em_lote" id="toc-requisitar_em_lote" class="nav-link" data-scroll-target="#requisitar_em_lote">requisitar_em_lote</a></li>
   <li><a href="#salvar_requisicao" id="toc-salvar_requisicao" class="nav-link" data-scroll-target="#salvar_requisicao">salvar_requisicao</a></li>
   </ul></li>
   <li><a href="#testes-unitários" id="toc-testes-unitários" class="nav-link" data-scroll-target="#testes-unitários">Testes Unitários</a></li>
@@ -292,7 +292,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="exemplos">Exemplos</h2>
 <section id="cpf" class="level3">
 <h3 class="anchored" data-anchor-id="cpf">CPF</h3>
-<div class="cell" data-execution_count="9">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> fastcore.test <span class="im">import</span> ExceptionExpected, test_eq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
@@ -301,12 +301,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>origem <span class="op">=</span> <span class="st">"Teste REST API"</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>ambiente <span class="op">=</span> <span class="st">'ds'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="13">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>req <span class="op">=</span> Requisicao(cpf_usuario, ambiente, origem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="14">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> req.consultar(identificador)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span> r[<span class="st">'cpf'</span>] <span class="co"># Não expõe o CPF no código</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
 <pre><code>{'nome': 'Tow Dh Vrmadfgixfxaxqupjkfp',
  'situacaoCadastral.codigo': 8,
  'situacaoCadastral.valor': 'Nula',
@@ -339,20 +343,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cpfs <span class="op">=</span> req.consultar_em_lote([cpf_usuario, identificador])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cpfs <span class="op">=</span> cpfs.<span class="bu">map</span>(<span class="kw">lambda</span> x: {k:v <span class="cf">for</span> k,v <span class="kw">in</span> x.items() <span class="cf">if</span> k <span class="op">!=</span> <span class="st">'cpf'</span>}) <span class="co"># Não expõe os CPFs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cpfs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
 <pre><code>(#2) [{'nome': 'Tuwpoxtzyzzruazdjdsqmaewylowhy', 'situacaoCadastral.codigo': 2, 'situacaoCadastral.valor': 'Suspensa', 'paisResidencia.residenteExterior': True, 'paisResidencia.codigoPais': 0, 'nomeMae': 'Sjflu Ifgemqkhdjvpgcjewylowhy', 'dataNascimento': '1937-10-25', 'sexo.codigo': 1, 'sexo.valor': 'Masculino', 'ocupacao.naturezaOcupacaoCodigo': 36, 'ocupacao.ocupacaoPrincipalCodigo': 320, 'ocupacao.ocupacaoPrincipalDescricao': 'Técnico em biologia', 'ocupacao.exercicioOcupacao': 9236, 'endereco.logradouro': 'Viy Emmkgotopwc Yyoamytp', 'endereco.numero': '598', 'endereco.cep': '37377234', 'endereco.bairro': 'Qqukpfkgfti', 'endereco.codigoMunicipio': 2931350, 'endereco.nomeMunicipio': 'Lkgwrl', 'endereco.uf': 'SP', 'telefone.ddd': '0025', 'telefone.numero': '31297214', 'unidadeAdministrativaCodigo': '1008514', 'anoObito': 0, 'estrangeiro': False, 'tituloEleitor': '0000000000000', 'dataAtualizacao': '1962-02-17', 'dataRegistroAnatel': '2022-08-16', 'resultado': 'CPF encontrado', 'erro': ''},{'nome': 'Tow Dh Vrmadfgixfxaxqupjkfp', 'situacaoCadastral.codigo': 8, 'situacaoCadastral.valor': 'Nula', 'paisResidencia.residenteExterior': True, 'paisResidencia.codigoPais': 0, 'nomeMae': 'Bvgoxicrewhewdrt', 'dataNascimento': '1917-06-28', 'sexo.codigo': 2, 'sexo.valor': 'Feminino', 'ocupacao.naturezaOcupacaoCodigo': 5, 'ocupacao.ocupacaoPrincipalCodigo': 966, 'ocupacao.exercicioOcupacao': 2736, 'endereco.logradouro': 'Jgp Vjfrvmytkvnnqskehmrg', 'endereco.numero': '098', 'endereco.cep': '93700734', 'endereco.bairro': 'Pahcjbobur', 'endereco.codigoMunicipio': 3519600, 'endereco.nomeMunicipio': 'Hobkpc', 'endereco.uf': 'RO', 'telefone.ddd': '0025', 'telefone.numero': '97620714', 'unidadeAdministrativaCodigo': '7431014', 'anoObito': 0, 'estrangeiro': False, 'tituloEleitor': '0000000000000', 'dataAtualizacao': '1964-12-23', 'dataRegistroAnatel': '2022-08-16', 'resultado': 'CPF encontrado', 'erro': ''}]</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cpfs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(cpfs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(cpfs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
 
 <div>
 
@@ -442,9 +446,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="cnpj" class="level3">
 <h3 class="anchored" data-anchor-id="cnpj">CNPJ</h3>
 <p>CNPJ somente números</p>
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>req.consultar(<span class="st">'00280273000137'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>req.consultar(<span class="st">'00280273000137'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
 <pre><code>{'cnpj': '00280273000137',
  'matriz': True,
  'nomeEmpresarial': 'Samsung Eletronica da Amazonia Ltda',
@@ -482,9 +486,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>CNPJ com separadores</p>
-<div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>req.consultar(<span class="st">'02.030.715/0001-12'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>req.consultar(<span class="st">'02.030.715/0001-12'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
 <pre><code>{'cnpj': '02030715000112',
  'matriz': True,
  'nomeEmpresarial': 'H Qyccquxlammrnsnssjydjvwdhlqqhjeaee',
@@ -531,11 +535,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="api-para-consulta-em-lote">API para consulta em lote</h3>
 <hr>
 </section>
-<section id="consultar_do_arquivo" class="level3">
-<h3 class="anchored" data-anchor-id="consultar_do_arquivo">consultar_do_arquivo</h3>
+<section id="requisitar_em_lote" class="level3">
+<h3 class="anchored" data-anchor-id="requisitar_em_lote">requisitar_em_lote</h3>
 <blockquote class="blockquote">
-<pre><code> consultar_do_arquivo (filename:str, cpf_usuario:str, ambiente:str='ds',
-                       origem:str=None, cache:int=36, saida:str=None)</code></pre>
+<pre><code> requisitar_em_lote (filename:str, cpf_usuario:str, ambiente:str='ds',
+                     origem:str=None, cache:int=36, saida:str=None)</code></pre>
 </blockquote>
 <p>Lê o arquivo <code>filename</code> com um CPF | CPNJ por linha. Faz a requisição no <code>ambiente</code> do receita-ws e salva os resultados em <code>saida</code></p>
 <table class="table">
@@ -637,59 +641,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="testes-unitários" class="level2">
 <h2 class="anchored" data-anchor-id="testes-unitários">Testes Unitários</h2>
 <p>Sem string de identificação origem</p>
-<div class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ExceptionExpected(ex<span class="op">=</span><span class="pp">AssertionError</span>, regex<span class="op">=</span> <span class="st">'origem não pode ficar vazio e deve ser uma string de até 30 caracteres'</span>):</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ExceptionExpected(ex<span class="op">=</span><span class="pp">AssertionError</span>, regex<span class="op">=</span> <span class="st">'origem não pode ficar vazio e deve ser uma string de até 30 caracteres'</span>):</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>origem não é uma string</p>
-<div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ExceptionExpected(ex<span class="op">=</span><span class="pp">AssertionError</span>, regex<span class="op">=</span> <span class="st">'origem não pode ficar vazio e deve ser uma string de até 30 caracteres'</span>):</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario, origem <span class="op">=</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ExceptionExpected(ex<span class="op">=</span><span class="pp">AssertionError</span>, regex<span class="op">=</span> <span class="st">'origem não pode ficar vazio e deve ser uma string de até 30 caracteres'</span>):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario, origem <span class="op">=</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>ambiente inválido</p>
-<div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ExceptionExpected(ex<span class="op">=</span><span class="pp">AssertionError</span>, regex<span class="op">=</span><span class="st">"Ambiente inválido"</span>):</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario, origem<span class="op">=</span><span class="st">'Teste'</span>, ambiente<span class="op">=</span><span class="st">'ts'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ExceptionExpected(ex<span class="op">=</span><span class="pp">AssertionError</span>, regex<span class="op">=</span><span class="st">"Ambiente inválido"</span>):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario, origem<span class="op">=</span><span class="st">'Teste'</span>, ambiente<span class="op">=</span><span class="st">'ts'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Teste de formatação da url corretamente de acordo com o ambiente</p>
-<div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>origem <span class="op">=</span> <span class="st">'Teste'</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ambiente <span class="kw">in</span> AMBIENTE:</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    req <span class="op">=</span> Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario, origem<span class="op">=</span>origem, ambiente<span class="op">=</span>ambiente)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> req.formatar_url(identificador)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ambiente <span class="op">==</span> <span class="st">'pd'</span>: </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        ambiente <span class="op">=</span> <span class="st">''</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    test_eq(url, <span class="ss">f'http://webservicesintranet</span><span class="sc">{</span>ambiente<span class="sc">}</span><span class="ss">.anatel.gov.br/receita/rest/obterPessoaFisicaIgnoraCacheAntigo?cpf=</span><span class="sc">{</span>identificador<span class="sc">}</span><span class="ss">&amp;cpfUsuario=</span><span class="sc">{</span>cpf_usuario<span class="sc">}</span><span class="ss">&amp;mesesExpiraCache=36&amp;origem=</span><span class="sc">{</span>origem<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>origem <span class="op">=</span> <span class="st">'Teste'</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ambiente <span class="kw">in</span> AMBIENTE:</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    req <span class="op">=</span> Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario, origem<span class="op">=</span>origem, ambiente<span class="op">=</span>ambiente)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> req.formatar_url(identificador)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ambiente <span class="op">==</span> <span class="st">'pd'</span>: </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        ambiente <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    test_eq(url, <span class="ss">f'http://webservicesintranet</span><span class="sc">{</span>ambiente<span class="sc">}</span><span class="ss">.anatel.gov.br/receita/rest/obterPessoaFisicaIgnoraCacheAntigo?cpf=</span><span class="sc">{</span>identificador<span class="sc">}</span><span class="ss">&amp;cpfUsuario=</span><span class="sc">{</span>cpf_usuario<span class="sc">}</span><span class="ss">&amp;mesesExpiraCache=36&amp;origem=</span><span class="sc">{</span>origem<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Teste de ambientes x tipos de requisição</p>
-<div class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>origem <span class="op">=</span> <span class="st">'Teste'</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>cache <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ambiente, tipo) <span class="kw">in</span> product(AMBIENTE, TIPO):</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    req <span class="op">=</span> Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario,</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>                  ambiente<span class="op">=</span>ambiente, </span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>                  origem<span class="op">=</span>origem, </span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>                  cache<span class="op">=</span>cache)</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    id_ <span class="op">=</span> identificador <span class="cf">if</span> tipo <span class="op">==</span> <span class="st">'cpf'</span> <span class="cf">else</span> <span class="st">'02030715000112'</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> req.formatar_url(id_)</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ambiente <span class="op">==</span> <span class="st">'pd'</span>: </span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>        ambiente <span class="op">=</span> <span class="st">''</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    test_eq(url, <span class="ss">f'http://webservicesintranet</span><span class="sc">{</span>ambiente<span class="sc">}</span><span class="ss">.anatel.gov.br/receita/rest/</span><span class="sc">{</span>TIPO[tipo]<span class="sc">}</span><span class="ss">IgnoraCacheAntigo?</span><span class="sc">{</span>tipo<span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>id_<span class="sc">}</span><span class="ss">&amp;cpfUsuario=</span><span class="sc">{</span>cpf_usuario<span class="sc">}</span><span class="ss">&amp;mesesExpiraCache=</span><span class="sc">{</span>cache<span class="sc">}</span><span class="ss">&amp;origem=</span><span class="sc">{</span>origem<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>origem <span class="op">=</span> <span class="st">'Teste'</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>cache <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ambiente, tipo) <span class="kw">in</span> product(AMBIENTE, TIPO):</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    req <span class="op">=</span> Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                  ambiente<span class="op">=</span>ambiente, </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                  origem<span class="op">=</span>origem, </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>                  cache<span class="op">=</span>cache)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    id_ <span class="op">=</span> identificador <span class="cf">if</span> tipo <span class="op">==</span> <span class="st">'cpf'</span> <span class="cf">else</span> <span class="st">'02030715000112'</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> req.formatar_url(id_)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ambiente <span class="op">==</span> <span class="st">'pd'</span>: </span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        ambiente <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    test_eq(url, <span class="ss">f'http://webservicesintranet</span><span class="sc">{</span>ambiente<span class="sc">}</span><span class="ss">.anatel.gov.br/receita/rest/</span><span class="sc">{</span>TIPO[tipo]<span class="sc">}</span><span class="ss">IgnoraCacheAntigo?</span><span class="sc">{</span>tipo<span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>id_<span class="sc">}</span><span class="ss">&amp;cpfUsuario=</span><span class="sc">{</span>cpf_usuario<span class="sc">}</span><span class="ss">&amp;mesesExpiraCache=</span><span class="sc">{</span>cache<span class="sc">}</span><span class="ss">&amp;origem=</span><span class="sc">{</span>origem<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>origem <span class="op">=</span> <span class="st">'Teste'</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>cache <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ambiente, tipo) <span class="kw">in</span> product(AMBIENTE, TIPO):</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    req <span class="op">=</span> Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                  ambiente<span class="op">=</span>ambiente, </span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                  origem<span class="op">=</span>origem, </span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                  cache<span class="op">=</span>cache)</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    id_ <span class="op">=</span> identificador <span class="cf">if</span> tipo <span class="op">==</span> <span class="st">'cpf'</span> <span class="cf">else</span> <span class="st">'02030715000112'</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> req.formatar_url(id_)</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ambiente <span class="op">==</span> <span class="st">'pd'</span>: </span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>        ambiente <span class="op">=</span> <span class="st">''</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    test_eq(url, <span class="ss">f'http://webservicesintranet</span><span class="sc">{</span>ambiente<span class="sc">}</span><span class="ss">.anatel.gov.br/receita/rest/</span><span class="sc">{</span>TIPO[tipo]<span class="sc">}</span><span class="ss">?</span><span class="sc">{</span>tipo<span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>id_<span class="sc">}</span><span class="ss">&amp;cpfUsuario=</span><span class="sc">{</span>cpf_usuario<span class="sc">}</span><span class="ss">&amp;origem=</span><span class="sc">{</span>origem<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>origem <span class="op">=</span> <span class="st">'Teste'</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>cache <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (ambiente, tipo) <span class="kw">in</span> product(AMBIENTE, TIPO):</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    req <span class="op">=</span> Requisicao(cpf_usuario<span class="op">=</span>cpf_usuario,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                  ambiente<span class="op">=</span>ambiente, </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                  origem<span class="op">=</span>origem, </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                  cache<span class="op">=</span>cache)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    id_ <span class="op">=</span> identificador <span class="cf">if</span> tipo <span class="op">==</span> <span class="st">'cpf'</span> <span class="cf">else</span> <span class="st">'02030715000112'</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> req.formatar_url(id_)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ambiente <span class="op">==</span> <span class="st">'pd'</span>: </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>        ambiente <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    test_eq(url, <span class="ss">f'http://webservicesintranet</span><span class="sc">{</span>ambiente<span class="sc">}</span><span class="ss">.anatel.gov.br/receita/rest/</span><span class="sc">{</span>TIPO[tipo]<span class="sc">}</span><span class="ss">?</span><span class="sc">{</span>tipo<span class="sc">}</span><span class="ss">=</span><span class="sc">{</span>id_<span class="sc">}</span><span class="ss">&amp;cpfUsuario=</span><span class="sc">{</span>cpf_usuario<span class="sc">}</span><span class="ss">&amp;origem=</span><span class="sc">{</span>origem<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

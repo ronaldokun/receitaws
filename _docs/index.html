@@ -197,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#como-utilizar" id="toc-como-utilizar" class="nav-link" data-scroll-target="#como-utilizar">Como utilizar</a>
   <ul class="collapse">
-  <li><a href="#consultar_do_arquivo" id="toc-consultar_do_arquivo" class="nav-link" data-scroll-target="#consultar_do_arquivo">consultar_do_arquivo</a></li>
+  <li><a href="#requisitar_em_lote" id="toc-requisitar_em_lote" class="nav-link" data-scroll-target="#requisitar_em_lote">requisitar_em_lote</a></li>
   <li><a href="#script-em-linha-de-comando" id="toc-script-em-linha-de-comando" class="nav-link" data-scroll-target="#script-em-linha-de-comando">Script em linha de comando</a></li>
   </ul></li>
   </ul>
@@ -268,16 +268,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="como-utilizar" class="level2">
 <h2 class="anchored" data-anchor-id="como-utilizar">Como utilizar</h2>
-<p>A biblioteca <code>nbdev</code> possui somente 1 módulo <code>consultas</code>, cuja API principal é a função <code>consultar_do_arquivo</code>:</p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> receitaws.consultas <span class="im">import</span> consultar_do_arquivo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A biblioteca <code>nbdev</code> possui somente 1 módulo <code>consultas</code>, cuja API principal é a função <code>requisitar_em_lote</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> receitaws.consultas <span class="im">import</span> requisitar_em_lote</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
-<section id="consultar_do_arquivo" class="level3">
-<h3 class="anchored" data-anchor-id="consultar_do_arquivo">consultar_do_arquivo</h3>
+<section id="requisitar_em_lote" class="level3">
+<h3 class="anchored" data-anchor-id="requisitar_em_lote">requisitar_em_lote</h3>
 <blockquote class="blockquote">
-<pre><code> consultar_do_arquivo (filename:str, cpf_usuario:str, ambiente:str='ds',
-                       origem:str=None, cache:int=36, saida:str=None)</code></pre>
+<pre><code> requisitar_em_lote (filename:str, cpf_usuario:str, ambiente:str='ds',
+                     origem:str=None, cache:int=36, saida:str=None)</code></pre>
 </blockquote>
 <p>Lê o arquivo <code>filename</code> com um CPF | CPNJ por linha. Faz a requisição no <code>ambiente</code> do receita-ws e salva os resultados em <code>saida</code></p>
 <table class="table">
@@ -343,9 +343,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <p>⚠️ Como arquivo de entrada é esperado um arquivo <em>texto</em>, e.g.&nbsp;<code>csv | txt | tsv etc...</code> com 1 registro por linha!</p>
 </blockquote>
-<div class="cell" data-execution_count="4">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cpf_usuario <span class="op">=</span> <span class="bu">input</span>(<span class="st">'Digite seu CPF para Identificação: '</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>consultar_do_arquivo(filename<span class="op">=</span><span class="vs">r'D:\Code\receitaws\dados\cpf.csv'</span>, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>requisitar_em_lote(filename<span class="op">=</span><span class="vs">r'D:\Code\receitaws\dados\cpf.csv'</span>, </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                     cpf_usuario<span class="op">=</span>cpf_usuario, </span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>                     ambiente<span class="op">=</span><span class="st">'ds'</span>,</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>                     origem<span class="op">=</span><span class="st">'Teste DS'</span>,</span>
@@ -357,10 +357,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <p>💯 Todos os dados retornados pelo web service são salvos!</p>
 </blockquote>
-<div class="cell" data-execution_count="5">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>resultados <span class="op">=</span> pd.read_csv(<span class="vs">r'D:\Code\receitaws\dados\resultados_cpf.csv'</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>resultados.iloc[:, <span class="dv">1</span>:] <span class="co"># Ocultar o CPF requisitado</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div class="cell-output cell-output-display">
 
 <div>
 
@@ -657,8 +657,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="script-em-linha-de-comando" class="level3">
 <h3 class="anchored" data-anchor-id="script-em-linha-de-comando">Script em linha de comando</h3>
-<p>Junto com a instalação do módulo é gerado um script para ser executado na linha de comando: <code>efetuar_requisicao</code></p>
-<p><strong>Windows</strong></p>
+<p>A API principal <code>requisitar_em _lote</code> pode ser executada programaticamente em linha de comando:</p>
+<p><img src="cli.png" alt="Requisição em Lote na Linha de Comando"></p>
 
 
 </section>
