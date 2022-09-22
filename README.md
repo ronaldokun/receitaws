@@ -90,8 +90,8 @@ principal é a função `requisitar_em_lote`:
 
 ### Script em linha de comando
 
-A API principal `requisitar_em _lote` mostrada acima pode ser executada
-programaticamente em linha de comando:
+A API principal `requisitar_em _lote` é exposta em linha de comando
+chamando diretamente o módulo da seguinte maneira:
 
     python -m receitaws [OPTIONS] FILENAME CPF_USUARIO
 
