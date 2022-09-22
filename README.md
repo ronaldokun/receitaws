@@ -88,6 +88,17 @@ mostrados no parágrafo anterior, basta efetuar o comando:
 A biblioteca `nbdev` possui somente 1 módulo `consultas`, cuja API
 principal é a função `requisitar_em_lote`:
 
+### Script em linha de comando
+
+A API principal `requisitar_em _lote` mostrada acima pode ser executada
+programaticamente em linha de comando:
+
+    python -m receitaws [OPTIONS] FILENAME CPF_USUARIO
+
+<img src="cli.png" alt="Requisição em Lote na Linha de Comando" />
+
+### Uso em outros módulos python
+
 ``` python
 from receitaws.consultas import requisitar_em_lote
 ```
@@ -455,12 +466,3 @@ Infoconv da receita federal 😎
 > Isso foi uma solução para evitar requisições, e por conseguinte
 > cobranças desnecessárias, de registros que já estão com atualização
 > recente em banco 🤑
-
-### Script em linha de comando
-
-A API principal `requisitar_em _lote` mostrada acima pode ser executada
-programaticamente em linha de comando:
-
-    python -m receitaws [OPTIONS] FILENAME CPF_USUARIO
-
-<img src="cli.png" alt="Requisição em Lote na Linha de Comando" />
