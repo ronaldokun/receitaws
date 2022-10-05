@@ -98,7 +98,7 @@ chamando diretamente o módulo da seguinte maneira:
 
     python -m receitaws [OPTIONS] FILENAME CPF_USUARIO
 
-<img src="cli.png" alt="Requisição em Lote na Linha de Comando" />
+<img src="notebooks/cli.png" alt="Requisição em Lote na Linha de Comando" />
 
 ### Dentro de outro módulo ou script python
 
