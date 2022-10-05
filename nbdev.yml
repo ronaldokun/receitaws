@@ -1,9 +1,0 @@
-project:
-  output-dir: _docs
-
-website:
-  title: "receitaws"
-  site-url: "https://ronaldokun.github.io/receitaws/"
-  description: "Repositório para armazenar scripts de automação de solicitações GET ao Web Service Receita-WS da Anatel."
-  repo-branch: main
-  repo-url: "https://github.com/ronaldokun/receitaws/"
