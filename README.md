@@ -18,12 +18,12 @@ firmado com a Anatel.
 Caso não tenha o python instalado, baixe a versão para a sua plataforma
 neste [link](https://www.python.org/downloads/) e siga as instruções.
 
-❗ Alternativamente, para uma plataforma de desenvolvimento mais
+? Alternativamente, para uma plataforma de desenvolvimento mais
 versátil recomendamos que seja instalado o
 [miniconda](https://docs.conda.io/en/latest/miniconda.html), que é uma
 versão mínima do Anaconda.
 
-⚡ Para uma versão otimizada do *miniconda*, com excelentes *defaults*,
+? Para uma versão otimizada do *miniconda*, com excelentes *defaults*,
 recomendamos ainda que seja instalado o
 [miniforge](https://github.com/conda-forge/miniforge/releases),
 
@@ -81,7 +81,7 @@ mostrados no parágrafo anterior, basta efetuar o comando:
 
     python -m pip install git+https://git.anatel.gov.br/rsilva/receitaws.git
 
-> ☝ Como este é um serviço de uso exclusivo na rede interna da Anatel e
+> ? Como este é um serviço de uso exclusivo na rede interna da Anatel e
 > por logins autorizados, a instalação é feita diretamente pelo
 > repositório:
 
@@ -143,7 +143,7 @@ cpf = CPF()
 cpf_usuario = cpf.generate()
 ```
 
-> ⚠️ Como arquivo de entrada é esperado um arquivo *texto*,
+> ?? Como arquivo de entrada é esperado um arquivo *texto*,
 > e.g. `csv | txt | tsv etc...` com 1 registro por linha!
 
 ``` python
@@ -443,7 +443,7 @@ requisitar_em_lote(entrada=r'D:\Code\receitaws\dados\cpf.csv',
 <p>10 rows × 32 columns</p>
 </div>
 
-> 🧠 Ao importar a função acima dentro de um módulo python, o seu uso é
+> ?? Ao importar a função acima dentro de um módulo python, o seu uso é
 > mais versátil. O argumento `entrada` pode ser tanto o caminho para um
 > arquivo texte com 1 registro por linha quanto um objeto python
 > iterável, como uma lista por exemplo
@@ -760,11 +760,11 @@ fazer a requisição.
 Caso o intervalo de tempo entre a data da requisição e a data de
 atualização do registro em banco corporativo for inferior ao `cache`, o
 registro do banco é retornado em lugar de se fazer a requisição ao
-Infoconv da receita federal 😎
+Infoconv da receita federal ??
 
 > Isso foi uma solução para evitar requisições, e por conseguinte
 > cobranças desnecessárias, de registros que já estão com atualização
-> recente em banco 🤑
+> recente em banco ??
 
 **Arquivo de Saída**
 
@@ -775,4 +775,4 @@ formato `json`. Caso seja fornecido uma extensão não suportada ou *não*
 seja fornecido um nome de arquivo de saída, será salvo um `csv` na pasta
 onde é feita a requisição.
 
-> 💯 Todos os dados retornados pelo web service são salvos!
+> ?? Todos os dados retornados pelo web service são salvos!
