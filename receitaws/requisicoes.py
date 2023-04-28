@@ -85,30 +85,58 @@ class Requisicao:
     ):
         store_attr()
         self._validar_parametros()
-        self.origem = self.origem[:30]
-        self.cpf_usuario = "".join(re.findall("\d", str(self.cpf_usuario)))
-        self.credentials = {}
+        self.origem: str = self.origem[:30]
+        self.credentials: dict = {}
+
+    @staticmethod
+    def _validar_identificador(
+        identificador: str | int,  # Identificador da requisição: CPF ou CNPJ
+        len_id: int,  # Comprimento do identificador, {CPF:11, CNPJ:14}
+    ) -> str:
+        """Valida a formatação do identificador: CPF | CNPJ"""
+        assert len_id in {
+            11,
+            14,
+        }, "O comprimento de identificador deve ser uma das opções: {CPF:11, CNPJ:14}"
+        identificador = Requisicao._pad_id(identificador, len_id)
+        tipo_id = CPF() if len_id == 11 else CNPJ()
+        if not tipo_id.validate(identificador):
+            raise ValueError(f"O {identificador=} não possui um formato válido")
+        return identificador
+
+    @staticmethod
+    def _pad_id(
+        identificador: int
+        | str,  # Identificador da requisição: CPF ou CNPJ de acordo com o tipo
+        fill: int,  # Comprimento do identificador, opcionalmente completando com zeros à esquerda
+    ) -> str:
+        """Preenche o identificador com zeros à esquerda até o comprimento total: {CPF:11, CNPJ:14}"""
+        identificador = "".join(re.findall(r"\d", str(identificador)))
+        assert isinstance(fill, int), f"{fill} deve ser um número inteiro"
+        return identificador.zfill(fill)
 
     def _validar_parametros(self) -> None:
         """Método interno de verificação e validação de parâmetros"""
-        if (
-            not isinstance(self.tipo, str)
-            or (tipo := self.tipo.lower()) not in TIPOS.keys()
-        ):
-            raise ValueError(
-                "Forneça uma string válida para o tipo de requisição: {CPF | CNPJ} (Case insensitive)"
-            )
-        self.tipo = tipo
+        self.cpf_usuario = Requisicao._validar_identificador(self.cpf_usuario, 11)
+        self.tipo = str(self.tipo).lower()
+        assert (
+            self.tipo in TIPOS.keys()
+        ), "Forneça uma string válida para o tipo de requisição: {CPF | CNPJ} (Case insensitive)"
+
         self.classe = CPF() if self.tipo == "cpf" else CNPJ()
-        assert isinstance(
-            self.origem, str
-        ), "origem não pode ficar vazio e deve ser uma string de até 30 caracteres"
+        self.origem = str(self.origem)
+        if not self.origem:
+            raise ValueError(
+                f"A string de identificação {self.origem} da requisição é obrigatória não pode ser vazia"
+            )
         assert (
             ambiente := self.ambiente.lower()
         ) in AMBIENTE.keys(), (
             f"Ambiente inválido, escolha uma das opções {AMBIENTE.keys()}"
         )
         self._definir_ambiente(*AMBIENTE[ambiente])
+        self.cache = int(self.cache)
+        assert self.cache >= 0, "O valor de cache deve ser >= 0"
 
     def _definir_ambiente(
         self,
@@ -120,19 +148,6 @@ class Requisicao:
         self.ambiente = ambiente
         self.token_url = token
         self.key = key
-
-    def _pad_zeros(
-        self,
-        identificador: int
-        | str,  # Identificador da requisição: CPF ou CNPJ de acordo com o tipo
-    ) -> str:
-        """Preenche o identificador com zeros à esquerda até o comprimento total: {CPF:11, CNPJ:14}"""
-        identificador = "".join(re.findall("\d", str(identificador)))
-        if self.tipo == "cpf":
-            return identificador.zfill(11)
-        elif self.tipo == "cnpj":
-            return identificador.zfill(14)
-        return ""
 
     def gerar_token(self) -> None:
         """Gera o token de requisição com validade de 1h à partir da chave de acesso do usuário
@@ -207,7 +222,7 @@ class Requisicao:
         ],  # Identificador da requisição: CPF ou CNPJ de acordo com o tipo
     ) -> dict:  # Dicionário com o resultado da requisição
         """Efetua a requisição do identificador e retorna um dicionário"""
-        identificador = self._pad_zeros(identificador)
+        identificador = self._pad_id(identificador)
         if not self.classe.validate(identificador):
             raise ValueError(
                 f"{self.tipo.upper()} Inválido! Verifique o identificador digitado: {identificador}"
@@ -225,9 +240,7 @@ class Requisicao:
     ) -> L:
         """Completa com zeros os identificadores e os filtra retornando somente os válidos"""
         return (
-            L(listify(identificadores))
-            .map(self._pad_zeros)
-            .filter(self.classe.validate)
+            L(listify(identificadores)).map(self._pad_id).filter(self.classe.validate)
         )
 
     def consultar_em_lote(
